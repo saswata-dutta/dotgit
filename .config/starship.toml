@@ -50,4 +50,4 @@ disabled = false
 style = "blue"
 
 [fill]
-symbol = " "
+symbol = "─"

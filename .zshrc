@@ -109,6 +109,9 @@ bindkey -e      # keep in emacs mode for Ctrl+<key> actions
 bindkey "^[^[[C" forward-word
 bindkey "^[^[[D" backward-word
 
+bindkey "^[[1;10D" beginning-of-line
+bindkey "^[[1;10C" end-of-line
+
 bindkey "^[U"     backward-kill-line
 bindkey "^X^_"    redo
 

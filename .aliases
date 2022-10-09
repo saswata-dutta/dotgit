@@ -6,14 +6,6 @@ alias mkdir='mkdir -pv'
 alias df="gdf -Tha --total"
 alias du="gdu -ach | sort -h"
 
-take () {
-	mkdir -p $@ && cd ${@:$#}
-}
-
-ssh-ip () {
-	ssh -G "$1" | head -2
-}
-
 # epoch stuff
 from-unixtime () {
     in="$1"
