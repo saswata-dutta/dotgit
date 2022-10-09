@@ -11,9 +11,17 @@ path+=('/Applications/Sublime Text.app/Contents/SharedSupport/bin')
 
 #####
 
+# Save history so we get auto suggestions
+HISTFILE=$HOME/.zsh_history
+HISTFILESIZE=1000000000
+HISTSIZE=10000
+SAVEHIST=$HISTSIZE
+HISTTIMEFORMAT="[%F %T] "
+
+
 # zsh Options
-setopt cdablevars				 # jump to path vars from anywhere
-setopt auto_cd 					 # cd by typing directory name if it's not a command
+setopt cdablevars                # jump to path vars from anywhere
+setopt auto_cd                   # cd by typing directory name if it's not a command
 setopt auto_list                 # automatically list choices on ambiguous completion
 setopt auto_menu                 # automatically use menu completion
 setopt always_to_end             # move cursor to end if word had one match
@@ -36,13 +44,15 @@ setopt hist_verify               # Do not execute immediately upon history expan
 setopt hist_beep                 # Beep when accessing non-existent history.
 setopt complete_in_word          # Complete from both ends of a word.
 setopt path_dirs                 # Perform path search even on command names with slashes.
-setopt globdots					 # ignore dot while matching hidden files
-setopt noclobber				 # prevent clobbering files use '>!' to clobber file
+setopt globdots                  # ignore dot while matching hidden files
+setopt noclobber                 # prevent clobbering files use '>!' to clobber file
 unsetopt case_glob               # Case-insensitive matching
 
+### comment if causing issues with some plugins
+# setopt cshjunkiequotes           # illegal to leave off closing quotes
+
+
 #####
-
-
 
 # source antidote
 source ${ZDOTDIR:-~}/.antidote/antidote.zsh
