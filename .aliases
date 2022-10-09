@@ -31,8 +31,6 @@ date-range () {
   done
 }
 
-export HISTTIMEFORMAT="%F %T "
-
 
 ###### abbrs
 
