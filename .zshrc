@@ -11,12 +11,16 @@ path+=('/Applications/Sublime Text.app/Contents/SharedSupport/bin')
 
 #####
 
+# set options for less
+export LESS='--quit-if-one-screen --ignore-case --status-column --LONG-PROMPT --RAW-CONTROL-CHARS --HILITE-UNREAD --tabs=4 --no-init --window=-4'
+
+
 # Save history so we get auto suggestions
-HISTFILE=$HOME/.zsh_history
-HISTFILESIZE=1000000000
-HISTSIZE=10000
-SAVEHIST=$HISTSIZE
-HISTTIMEFORMAT="[%F %T] "
+export HISTFILE=$HOME/.zsh_history
+export HISTFILESIZE=1000000000
+export HISTSIZE=10000
+export SAVEHIST=$HISTSIZE
+export HISTTIMEFORMAT="[%F %T] "
 
 
 # zsh Options
