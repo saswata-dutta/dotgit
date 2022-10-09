@@ -1,0 +1,194 @@
+[user]
+    name = saswata
+    email = saswat.dutta@gmail.com
+
+[credential]
+	helper = cache
+[apply]
+	whitespace = nowarn
+[color]
+	branch = auto
+	diff = auto
+	status = auto
+	ui = true
+[color "branch"]
+	current = yellow reverse
+	local = yellow
+	remote = green
+[color "diff"]
+	meta = yellow
+	frag = magenta bold
+	old = red bold
+	new = green bold
+	commit = yellow bold
+	whitespace = red reverse
+[color "status"]
+	added = yellow
+	changed = green
+	untracked = cyan
+[merge]
+    conflictstyle = diff3
+	tool = kdiff3
+[rerere]
+    enabled = true
+[alias]
+    l = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+    co = checkout
+    br = branch
+    ci = commit
+    st = status
+    unstage = reset HEAD --
+    last = log -1 HEAD
+	ec = config --global -e
+	save = !git add -A && git commit -m '@WIP SAVEPOINT'
+	wip = commit -am WIP
+	undo = !/usr/local/bin/legit undo
+	amend = commit -a --amend
+	wipe = !git add -A && git commit -qm 'WIPE TEMP SAVEPOINT' && git reset HEAD~1 --hard
+	bclean = "!f() { git checkout ${1-master} && git branch --merged ${1-master} | grep -v  ${1-master}$ | xargs git branch -d; }; f"
+    lc = log ORIG_HEAD.. --stat --no-merges
+    changes = diff --name-status -r
+    diffstat = diff --stat -r
+    new = !sh -c 'git log $1@{1}..$1@{0} $@'
+    whatis = show -s --pretty='tformat:%h (%s, %ad)' --date=short
+    graphviz = "!f() { echo 'digraph git {' ; git log --pretty='format:  %h -> { %p }' \"$@\" | sed 's/[0-9a-f][0-9a-f]*/\"&\"/g' ; echo '}'; }; f"
+    record = ! sh -c '(git add -p -- $@ && git commit) || git reset' --
+    untrack = rm --cache --
+    alias = config --get-regexp ^alias\\.
+	contains = branch -r --contains
+	patch = !git --no-pager diff --no-color
+#
+# Working with branches
+#
+
+# Get the current branch name (not so useful in itself, but used in
+# other aliases)
+	branch-name = !git rev-parse --abbrev-ref HEAD
+# Push the current branch to the remote "origin", and set it to track
+# the upstream branch
+	publish = !/usr/local/bin/legit publish
+# Delete the remote version of the current branch
+	unpublish = !/usr/local/bin/legit unpublish
+# Delete a branch and recreate it from master — useful if you have, say,
+# a development branch and a master branch and they could conceivably go
+# out of sync
+	recreate = "!f() { [[ -n $@ ]] && git checkout \"$@\" && git unpublish && git checkout master && git branch -D \"$@\" && git checkout -b \"$@\" && git publish; }; f"
+
+# Fire up your difftool (e.g. Kaleidescope) with all the changes that
+# are on the current branch.
+	code-review = difftool origin/master...
+
+# Given a merge commit, find the span of commits that exist(ed) on that
+# branch. Again, not so useful in itself, but used by other aliases.
+	merge-span = "!f() { echo $(git log -1 $2 --merges --pretty=format:%P | cut -d' ' -f1)$1$(git log -1 $2 --merges --pretty=format:%P | cut -d' ' -f2); }; f"
+
+# Find the commits that were introduced by a merge
+	merge-log = !git log `git merge-span .. $1`
+# Show the changes that were introduced by a merge
+	merge-diff = !git diff `git merge-span ... $1`
+# As above, but in your difftool
+	merge-difftool = !git difftool `git merge-span ... $1`
+
+# Interactively rebase all the commits on the current branch
+	rebase-branch = !git rebase -i `git merge-base master HEAD`
+
+#
+# Working with files
+#
+
+
+# Mark a file as "assume unchanged", which means that Git will treat it
+# as though there are no changes to it even if there are. Useful for
+# temporary changes to tracked files
+	assume = update-index --assume-unchanged
+# Reverse the above
+	unassume = update-index --no-assume-unchanged
+# Show the files that are currently assume-unchanged
+	assumed = !git ls-files -v | grep ^h | cut -c 3-
+
+# Checkout our version of a file and add it
+	ours = "!f() { git checkout --ours $@ && git add $@; }; f"
+# Checkout their version of a file and add it
+	theirs = "!f() { git checkout --theirs $@ && git add $@; }; f"
+
+# Delete any branches that have been merged into master
+# See also: https://gist.github.com/robmiller/5133264
+	delete-merged-branches = !git co master && git branch --merged | grep -v '\\*' | xargs -n 1 git branch -d
+	unmerged = !git --no-pager diff --name-only --diff-filter=U
+	conflicts = !git --no-pager diff --check
+	sync = !/usr/local/bin/legit sync
+	branches = !/usr/local/bin/legit branches
+	update = !git fetch --all --prune --prune-tags && git rebase && git submodule update --init --recursive
+	ls = !git ls-tree -r HEAD --name-only
+	dag = log --graph --format='format:%C(yellow)%h%C(reset) %C(blue)%an <%ae>%C(reset) %C(magenta)%cr%C(reset)%C(auto)%d%C(reset)%n%s' --date-order
+
+[core]
+	# pager = diff-so-fancy | less --tabs=4 -RFX
+	pager = delta # --diff-so-fancy
+	editor = subl -n -w
+	excludesFile = ~/.gitexcludes
+
+[interactive]
+	diffFilter = delta --color-only --features=interactive
+
+[delta "interactive"]
+	keep-plus-minus-markers = false
+
+[delta]
+	features = line-numbers decorations # side-by-side
+	whitespace-error-style = 22 reverse
+	syntax-theme = Nord
+
+[delta "decorations"]
+	commit-decoration-style = bold yellow box ul
+	file-style = bold yellow ul
+	file-decoration-style = none
+
+
+[pager]
+	# diff = delta --diff-so-fancy | less --tabs=2 -RFX --pattern '^diff --git'
+	# diff = diff-so-fancy | less --tabs=2 -RFX --pattern '^(Date|added|deleted|modified): '
+#	diff = "diff-so-fancy | GREP_COLOR='1;37' grep --color=always -E 'Merge (branch|pull request).*|$' | less --tabs=2 -RFX"
+
+[color "diff-highlight"]
+	oldNormal = red bold
+	oldHighlight = red bold 52
+	newNormal = green bold
+	newHighlight = green bold 22
+
+[diff-so-fancy]
+	useUnicodeRuler = true
+
+[diff]
+	guitool = kdiff3
+	algorithm = histogram
+	colorMoved = zebra
+[difftool "kdiff3"]
+	trustExitCode = false
+[mergetool "kdiff3"]
+	trustExitCode = false
+
+[tig] show-rev-graph = true
+ show-rev-graph = true
+[tig "color"] cursor = yellow red bold
+ cursor = yellow red bold
+[tig "bind"] generic = P parent
+ generic = P parent
+[help]
+	autocorrect = 1
+[filesystem "Eclipse OpenJ9|1.8.0_232|/dev/disk1s1"]
+	timestampResolution = 1001 milliseconds
+	minRacyThreshold = 0 nanoseconds
+[pull]
+	rebase = true
+[fetch]
+	prune = true
+[push]
+	default = simple
+[secrets]
+	providers = git secrets --aws-provider
+	patterns = (A3T[A-Z0-9]|AKIA|AGPA|AIDA|AROA|AIPA|ANPA|ANVA|ASIA)[A-Z0-9]{16}
+	patterns = (\"|')?(AWS|aws|Aws)?_?(SECRET|secret|Secret)?_?(ACCESS|access|Access)?_?(KEY|key|Key)(\"|')?\\s*(:|=>|=)\\s*(\"|')?[A-Za-z0-9/\\+=]{40}(\"|')?
+	patterns = (\"|')?(AWS|aws|Aws)?_?(ACCOUNT|account|Account)_?(ID|id|Id)?(\"|')?\\s*(:|=>|=)\\s*(\"|')?[0-9]{4}\\-?[0-9]{4}\\-?[0-9]{4}(\"|')?
+	allowed = AKIAIOSFODNN7EXAMPLE
+	allowed = wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY

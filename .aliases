@@ -1,0 +1,120 @@
+
+alias cp='cp -irv'
+alias mv='mv -iv'
+alias mkdir='mkdir -pv'
+
+alias df="gdf -Tha --total"
+alias du="gdu -ach | sort -h"
+
+take () {
+	mkdir -p $@ && cd ${@:$#}
+}
+
+ssh-ip () {
+	ssh -G "$1" | head -2
+}
+
+# epoch stuff
+from-unixtime () {
+    in="$1"
+    gdate --date="@${in:0:10}"
+}
+
+alias unixtime='date +%s'
+
+date-range () {
+  current="$1"
+  stop="$2"
+  until [[ $current > $stop ]]; do
+    echo "$current"
+    current=$(gdate -I -d "$current + 1 day")
+  done
+}
+
+export HISTTIMEFORMAT="%F %T "
+
+
+###### abbrs
+
+load_abbrs() {
+	abbr ...='../..'
+	abbr ....='../../..'
+	abbr -- -='cd -'
+
+	abbr psg="ps aux | grep -v grep | grep -i -e VSZ -e"
+
+	###
+
+	abbr ip='curl -s "ipinfo.io" | jq'
+
+	abbr brewup='brew update; brew upgrade; brew cleanup --prune-prefix; brew cleanup; brew doctor;'
+
+	abbr py='ptipython --config-file ~/.config/.ptpython_config.py'
+
+	#### listing
+
+	abbr l='exa --classify'
+	abbr ll='exa -alF --git'
+	abbr la='exa -aF'
+	abbr lh='exa --sort=mod --all --reverse -l | head'
+	abbr lt='exa --tree --level=3 '
+
+	##### git
+	abbr g='git'
+	abbr gl='git l -10'
+	abbr gb="git branch"
+	abbr gco="git checkout"
+	abbr gp="git fetch --all --prune --prune-tags && git rebase"
+	abbr gcls="git reset --hard HEAD"
+	abbr gs="git status"
+	abbr gc="git commit"
+	abbr gcam="git commit -am "
+
+	abbr ga="git add -u"
+	abbr gal="git add -A"
+
+	abbr gd="git diff -w"
+	abbr gdc="git diff -w --cached"
+	abbr gdw="git diff -w --color-words='[^[:space:]]|([[:alnum:]]|UTF_8_GUARD)+'"
+
+	abbr gnb="git checkout --no-track -b"
+	abbr gnrb="git push -f -u"
+
+	abbr gfix="git commit --amend --no-edit"
+
+	abbr gstage="git add -- "
+	abbr gunstage="git reset HEAD -- "
+	abbr gfnm="git show --name-only"
+}
+
+##### data
+
+i() {
+  (head -n 5; tail -n 5) < "$1" | column -t
+}
+
+min_max () {
+  gawk '
+    NR == 1 {min = max = $1}
+    {
+      if ($1 > max) max = $1
+      else if ($1 < min) min = $1
+    }
+    END {print min, max}
+  '
+}
+
+####
+
+#dot files git config
+# https://www.atlassian.com/git/tutorials/dotfiles
+alias dotgit='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
+
+dotgit_init() {
+	cd "$HOME"
+	touch .gitignore
+	echo '.cfg' >> .gitignore
+	git init --bare "$HOME/.cfg"
+	alias dotgit='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
+	dotgit config --local status.showUntrackedFiles no
+}

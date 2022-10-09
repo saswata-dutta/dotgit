@@ -1,0 +1,53 @@
+
+scan_timeout = 500
+
+add_newline = true
+
+format = """
+$directory\
+$git_branch\
+$git_commit\
+$git_state\
+$git_status\
+$fill\
+$status\
+$cmd_duration\
+$jobs\
+$time\
+$line_break\
+$character
+"""
+
+
+[cmd_duration]
+min_time = 0
+show_milliseconds = true
+format = "[$duration]($style) "
+style = "green"
+show_notifications = true
+min_time_to_notify = 30_000
+
+
+[character]
+error_symbol = "[X](bold red) "
+
+
+[directory]
+truncation_length = 8
+truncation_symbol = "…/"
+
+
+[status]
+disabled = false
+
+
+[git_branch]
+format = "[$symbol$branch]($style) "
+
+
+[time]
+disabled = false
+style = "blue"
+
+[fill]
+symbol = " "
