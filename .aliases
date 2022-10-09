@@ -6,6 +6,10 @@ alias mkdir='mkdir -pv'
 alias df="gdf -Tha --total"
 alias du="gdu -ach | sort -h"
 
+mkc() {
+  mkdir -p "$1" && cd "$1" || return 1
+}
+
 # epoch stuff
 from-unixtime () {
     in="$1"
@@ -75,6 +79,7 @@ load_abbrs() {
 	abbr gstage="git add -- "
 	abbr gunstage="git reset HEAD -- "
 	abbr gfnm="git show --name-only"
+
 }
 
 ##### data

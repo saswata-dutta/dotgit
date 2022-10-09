@@ -17,7 +17,7 @@ export LESS='--quit-if-one-screen --ignore-case --status-column --LONG-PROMPT --
 
 # Save history so we get auto suggestions
 export HISTFILE=$HOME/.zsh_history
-export HISTFILESIZE=1000000000
+export HISTFILESIZE=1000000
 export HISTSIZE=10000
 export SAVEHIST=$HISTSIZE
 export HISTTIMEFORMAT="[%F %T] "
@@ -94,6 +94,21 @@ zstyle ':completion:*:complete:(cd|pushd):*' format ' '
 # Partial-word, and then substring completion.
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
 
+# disable sort when completing `git checkout`
+zstyle ':completion:*:git-checkout:*' sort false
+# set descriptions format to enable group support
+zstyle ':completion:*:descriptions' format '[%d]'
+# set list-colors to enable filename colorizing
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+# preview directory's content with exa when completing cd
+zstyle ':fzf-tab:complete:cd:*' fzf-preview 'exa -1 --color=always $realpath'
+# switch group using `,` and `.`
+zstyle ':fzf-tab:*' switch-group ',' '.'
+
+# only for git
+zstyle ':completion:*:*:git:*' fzf-search-display true
+# or for everything
+zstyle ':completion:*' fzf-search-display true
 
 # By default, zsh considers many characters part of a word (e.g., _ and -).
 # Narrow that down to allow easier skipping through words via M-f and M-b.
@@ -133,5 +148,3 @@ source ~/.aliases
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="$HOME/.sdkman"
 [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
-
-

@@ -1,6 +1,6 @@
 
-olets/zsh-abbr 
-
+Aloxaf/fzf-tab
+olets/zsh-abbr
 
 zsh-users/zsh-completions
 zsh-users/zsh-autosuggestions
