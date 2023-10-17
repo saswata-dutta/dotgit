@@ -17,8 +17,8 @@ export LESS='--quit-if-one-screen --ignore-case --status-column --LONG-PROMPT --
 
 # Save history so we get auto suggestions
 export HISTFILE=$HOME/.zsh_history
-export HISTFILESIZE=1000000
-export HISTSIZE=10000
+export HISTFILESIZE=1000
+export HISTSIZE=1000
 export SAVEHIST=$HISTSIZE
 export HISTTIMEFORMAT="[%F %T] "
 
@@ -121,17 +121,17 @@ export WORDCHARS='*?[]~&;!$%^<>'
 bindkey -e      # keep in emacs mode for Ctrl+<key> actions
 
 # moves
-bindkey "^[^[[C" forward-word
-bindkey "^[^[[D" backward-word
+# bindkey "^[^[[C" forward-word
+# bindkey "^[^[[D" backward-word
 
-bindkey "^[[1;10D" beginning-of-line
-bindkey "^[[1;10C" end-of-line
+# bindkey "^[[1;10D" beginning-of-line
+# bindkey "^[[1;10C" end-of-line
 
-bindkey "^[U"     backward-kill-line
-bindkey "^X^_"    redo
+# bindkey "^[U"     backward-kill-line
+# bindkey "^X^_"    redo
 
-bindkey '^[[A'    history-substring-search-up
-bindkey '^[[B'    history-substring-search-down
+# bindkey '^[[A'    history-substring-search-up
+# bindkey '^[[B'    history-substring-search-down
 
 #############
 # Termcolor
@@ -145,6 +145,9 @@ source ~/.aliases
 
 #####
 
+source /Users/sas/.config/broot/launcher/bash/br
+
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="$HOME/.sdkman"
 [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
+

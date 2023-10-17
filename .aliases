@@ -8,6 +8,15 @@ alias du="gdu -ach | sort -h"
 alias brewup="brew update; brew upgrade; brew cleanup --prune-prefix; brew cleanup; brew doctor"
 alias pyshell="ptipython --config-file ~/.config/.ptpython_config.py"
 
+rgi() {
+	local cmd
+	cmd="rg --color=always --line-number -g \"$@\" \"{}\""
+	sk --ansi -i -c $cmd
+}
+
+fdi() {
+	fd -t f | sk --preview="bat --color=always"
+}
 
 mkc() {
   mkdir -p "$1" && cd "$1" || return 1
@@ -22,8 +31,8 @@ from-unixtime () {
 alias unixtime='date +%s'
 
 date-range () {
-  current="$1"
-  stop="$2"
+  local current="$1"
+  local stop="$2"
   until [[ $current > $stop ]]; do
     echo "$current"
     current=$(gdate -I -d "$current + 1 day")
